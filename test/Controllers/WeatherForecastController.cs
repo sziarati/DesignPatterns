@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Patterns.Proxy;
 
-namespace Patterns.Controllers
+namespace test.Controllers
 {
     [ApiController]
     [Route("[controller]")]
@@ -13,18 +12,15 @@ namespace Patterns.Controllers
     };
 
         private readonly ILogger<WeatherForecastController> _logger;
-        private readonly IVideoDownloader videoDownloader;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, IVideoDownloader videoDownloader)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger)
         {
             _logger = logger;
-            this.videoDownloader = videoDownloader;
         }
 
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
-            videoDownloader.Download("");
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),

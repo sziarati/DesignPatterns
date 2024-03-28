@@ -1,4 +1,4 @@
-namespace Patterns
+namespace test
 {
     public class WeatherForecast
     {

@@ -1,4 +1,6 @@
+using DesignPatterns.Proxy;
 using Patterns.Proxy;
+using DesignPatterns.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,8 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<IVideoDownloader, VideoDownloaderProxy>(
-        serviceProvider => new VideoDownloaderProxy(new VideoDownloader())
-    );
+        serviceProvider => new VideoDownloaderProxy(new VideoDownloader()));
+
+builder.Services.AddScoped<IUserProfileBuilder, UserProfileBuilder>();
+builder.Services.AddScoped<IUserProfileChainOfResponsibilityBuilder, UserProfileChainOfResponsibilityBuilder>();
 
 var app = builder.Build();
 
