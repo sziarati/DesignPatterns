@@ -1,4 +1,5 @@
 using DesignPatterns.Builder;
+using DesignPatterns.ChainOfResponsibility;
 using DesignPatterns.Entities;
 using DesignPatterns.Proxy;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,7 @@ namespace Patterns.Controllers
         public DesingPatternController(
             ILogger<DesingPatternController> logger,
             IVideoDownloader videoDownloader,
-            IUserProfileBuilder userProfileBuilder, 
+            IUserProfileBuilder userProfileBuilder,
             IUserProfileChainOfResponsibilityBuilder userProfileChainOfResponsibilityBuilder)
         {
             _logger = logger;
@@ -57,6 +58,24 @@ namespace Patterns.Controllers
 
             return userProfile;
         }
+
+        [HttpGet]
+        [Route("ChainOfResponsibilityPattrn")]
+        public void ChainOfResponsibilityPattern(LogLevel logLevel)
+        {
+            string logMessage = System.Text.Json.JsonSerializer.Serialize(HttpContext.Request.Path);
+            AbstractLogHandler fileLogHandler = new FileLogHandler();
+            AbstractLogHandler mailLogHandler = new EmailLogHandler();
+            AbstractLogHandler consoleLogHandler = new ConsoleLogHandler();
+
+            // Set up the chain
+            fileLogHandler
+                .SetNextHandler(mailLogHandler)
+                .SetNextHandler(consoleLogHandler);
+
+            fileLogHandler.Handle(logMessage, logLevel);
+        }
+
         [HttpGet]
         public void Get()
         {
