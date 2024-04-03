@@ -4,11 +4,11 @@ namespace Patterns.Proxy
 {
     public class VideoDownloaderProxy : IVideoDownloader
     {
-        private readonly VideoDownloader VideoDownloader;
+        private readonly VideoDownloader _videoDownloader;
         Dictionary<string, FileStream> Videos = new();
         public VideoDownloaderProxy(VideoDownloader videoDownloader)
         {
-            VideoDownloader = videoDownloader;
+            _videoDownloader = videoDownloader;
         }
         public FileStream Download(string url)
         {
@@ -16,7 +16,7 @@ namespace Patterns.Proxy
             if (video?.Length > 0)
                 return video;
 
-            var downloadedVideo = VideoDownloader.Download(url);
+            var downloadedVideo = _videoDownloader.Download(url);
             Videos.Add(url, downloadedVideo);
             return downloadedVideo;
         }

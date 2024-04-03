@@ -8,9 +8,4 @@
         public DateTime Created { get; set; }
         public bool NotifyByEmail { get; set; }
     }
-    public enum UserProfileType
-    {
-        PRIVATE,
-        PUBLIC
-    }
 }

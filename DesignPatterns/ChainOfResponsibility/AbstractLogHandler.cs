@@ -6,7 +6,6 @@ namespace DesignPatterns.ChainOfResponsibility;
 public abstract class AbstractLogHandler
 {
     protected AbstractLogHandler? _nextHandler;
-    protected LogLevel _logLevel;
     protected abstract LogLevel logLevel { get;}
 
     public AbstractLogHandler SetNextHandler(AbstractLogHandler nextHandler) 

@@ -4,38 +4,42 @@ namespace DesignPatterns.Builder
 {
     public class UserProfileBuilder : IUserProfileBuilder
     {
-        private UserProfileType Type = UserProfileType.PUBLIC;
-        private bool IsActive = true ;
-        private bool IsLocked = false;
-        private DateTime Created ;
-        private bool EmailNotification;
+        private UserProfileType _type = UserProfileType.PUBLIC;
+        private bool _isActive = true ;
+        private bool _isLocked = false;
+        private DateTime _created ;
+        private bool _emailNotification;
+        public UserProfileBuilder()
+        {
+            _created = DateTime.Now;
+        }
         public void Active(bool Active = true)
         {
-            IsActive = Active ;
+            _isActive = Active ;
         }
         public void Locked(bool locked)
         {
-            IsLocked = locked;
+            _isLocked = locked;
         }
         public void NotifyByEmail(bool notify)
         {
-            EmailNotification = notify;            
+            _emailNotification = notify;            
         }
         public void IsPrivate(bool isPrivate = true)
         {
-            if (isPrivate)
-                Type = UserProfileType.PRIVATE;
-            else
-                Type = UserProfileType.PUBLIC;
+            _type = isPrivate ? UserProfileType.PRIVATE : UserProfileType.PUBLIC;
         }
         public UserProfile Build()
         {
-            var userProfile = new UserProfile();
-            userProfile.IsActive = IsActive ;
-            userProfile.Type = Type ;
-            userProfile.IsLocked = IsLocked ;
-            userProfile.Created = DateTime.Now ;
-            userProfile.NotifyByEmail = EmailNotification ;
+            var userProfile = new UserProfile()
+            {
+                IsLocked = _isLocked,
+                IsActive = _isActive,
+                NotifyByEmail = _emailNotification,
+                Type = _type,
+                Created = _created,
+            };
+
             return userProfile;
         }
     }
