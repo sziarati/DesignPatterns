@@ -2,21 +2,23 @@ using DesignPatterns.Builder;
 using DesignPatterns.ChainOfResponsibility;
 using DesignPatterns.Entities;
 using DesignPatterns.Proxy;
+using DesignPatterns.Singleton;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace Patterns.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class DesingPatternController : ControllerBase
+    public class DesignPatternController : ControllerBase
     {
-        private readonly ILogger<DesingPatternController> _logger;
+        private readonly ILogger<DesignPatternController> _logger;
         private readonly IVideoDownloader videoDownloader;
         private readonly IUserProfileBuilder userProfileBuilder;
         private readonly IUserProfileChainOfResponsibilityBuilder userProfileChainOfResponsibilityBuilder;
 
-        public DesingPatternController(
-            ILogger<DesingPatternController> logger,
+        public DesignPatternController(
+            ILogger<DesignPatternController> logger,
             IVideoDownloader videoDownloader,
             IUserProfileBuilder userProfileBuilder,
             IUserProfileChainOfResponsibilityBuilder userProfileChainOfResponsibilityBuilder)
@@ -34,7 +36,7 @@ namespace Patterns.Controllers
             return videoDownloader.Download("");
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("BuilderPattern")]
         public UserProfile BuilderPattern()
         {
@@ -45,7 +47,7 @@ namespace Patterns.Controllers
             var userProfile = userProfileBuilder.Build();
             return userProfile;
         }
-        [HttpGet]
+        [HttpPost]
         [Route("BuilderPatternChainOfResponsibility")]
         public UserProfile BuilderPatternChainOfResponsibility()
         {
@@ -59,7 +61,7 @@ namespace Patterns.Controllers
             return userProfile;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("ChainOfResponsibilityPattrn")]
         public void ChainOfResponsibilityPattern(LogLevel logLevel)
         {
@@ -74,6 +76,16 @@ namespace Patterns.Controllers
                 .SetNextHandler(consoleLogHandler);
 
             fileLogHandler.Handle(logMessage, logLevel);
+        }
+
+        [HttpPost]
+        [Route("SingletonPattrn")]
+        public async Task<JsonResult> SingletonPattrn([FromHeader]string key, [FromHeader]string value)
+        {
+            var cache = CacheManager.GetCache();
+            await cache.Set(key, value);
+            var cachedValue = await cache.Get(key);
+            return new JsonResult(cachedValue);
         }
 
         [HttpGet]
