@@ -10,25 +10,12 @@ namespace Patterns.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class DesignPatternController : ControllerBase
+    public class DesignPatternController(
+        ILogger<DesignPatternController> logger,
+        IVideoDownloader videoDownloader,
+        IUserProfileBuilder userProfileBuilder,
+        IUserProfileChainOfResponsibilityBuilder userProfileChainOfResponsibilityBuilder) : ControllerBase
     {
-        private readonly ILogger<DesignPatternController> _logger;
-        private readonly IVideoDownloader videoDownloader;
-        private readonly IUserProfileBuilder userProfileBuilder;
-        private readonly IUserProfileChainOfResponsibilityBuilder userProfileChainOfResponsibilityBuilder;
-
-        public DesignPatternController(
-            ILogger<DesignPatternController> logger,
-            IVideoDownloader videoDownloader,
-            IUserProfileBuilder userProfileBuilder,
-            IUserProfileChainOfResponsibilityBuilder userProfileChainOfResponsibilityBuilder)
-        {
-            _logger = logger;
-            this.videoDownloader = videoDownloader;
-            this.userProfileBuilder = userProfileBuilder;
-            this.userProfileChainOfResponsibilityBuilder = userProfileChainOfResponsibilityBuilder;
-        }
-
         [HttpGet]
         [Route("ProxyPattern")]
         public FileStream ProxyPattern()
